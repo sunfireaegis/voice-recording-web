@@ -1,5 +1,10 @@
 from flask import Flask, render_template, request
 
+# from OpenSSL import SSL
+# context = SSL.Context(SSL.PR)
+# context.use_privatekey_file('server.key')
+# context.use_certificate_file('server.crt')
+
 app = Flask("voice_recorder")
 
 
@@ -8,15 +13,11 @@ def index():
     return render_template("index.html", title="testt")
 
 
-@app.route("/recording")
+@app.route("/recording", methods=["POST"])
 def get_file():
-    print(request.method)
     if request.method == "POST":
-        print("Post Method")
-    else:
-        print("GEt method")
-        return "Some Text"
+        return render_template("index.html", success=True)
 
 
 if __name__ == '__main__':
-    app.run(host="localhost", port=5000)
+    app.run(host="localhost", port=5000, debug=True, ssl_context="adhoc")
