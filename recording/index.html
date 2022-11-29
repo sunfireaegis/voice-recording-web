@@ -5,8 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voice Recording</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div id="wrapper">
@@ -20,12 +19,14 @@
                 <div id="task">Lorem ipsum dolor sit amet.</div>
             </div>
             <div id="button-container">
-                <button id="record">Запись</button>
-                <button id="stop">Стоп</button>
-                <button id="listen">Прослушать</button>
-                <button id="send">Отправить</button>
-                <button id="skip">Пропустить</button>
+                <a href="#" id="record" class="butt start"><div>Запись</div></a>
+                <a href="#" id="listen" class="butt">
+                    <div>Прослушать</div>
+                </a>
+                <a href="#" class="butt"><div>Отправить</div></a>
+                <a href="#" class="butt"><div>Пропустить</div></a>
             </div>
+            <script src="{{ url_for('static', filename='js/script.js') }}"></script>
         </div>
     </div>
 </body>
