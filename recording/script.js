@@ -27,7 +27,6 @@ navigator.mediaDevices.getUserMedia({audio: true})
             mainaudio.controls = true;
             mainaudio.src = URL.createObjectURL(blob);
             document.body.appendChild(mainaudio);
-
         });
         
 
@@ -35,7 +34,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
 async function sendRecord(record) {
     let promise = await fetch('https://localhost:5000/recording', {
         method: 'POST',
-        body: form});
+        body: record});
 }
 
 
