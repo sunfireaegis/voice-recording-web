@@ -50,6 +50,9 @@ navigator.mediaDevices.getUserMedia({audio: true})
             chunks.push(event.data);
         };
 
+        const mainaudio = new Audio;
+        mainaudio.controls = true;
+        document.querySelector("#main_body").appendChild(mainaudio)
         mediaRecorder.addEventListener("stop", function () {
             const blob = new Blob(chunks, {
                 type: 'audio/wav'
@@ -62,11 +65,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
             })
 
             // creates interactive element in body
-            const mainaudio = new Audio;
-            mainaudio.controls = true;
             mainaudio.src = URL.createObjectURL(blob);
-            document.querySelector("#main_body").appendChild(mainaudio);
-
         });
 
 
