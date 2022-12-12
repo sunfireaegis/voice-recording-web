@@ -1,4 +1,4 @@
-var buttons = document.getElementsByClassName('butt'),
+var buttons = document.getElementsByClassName('butt'), 
     forEach = Array.prototype.forEach;
 
 forEach.call(buttons, function (b) {
@@ -27,6 +27,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
         let chunks = [] // array for binary audio
 
         const btnVoice = document.querySelector('#record')
+        const btnSend = document.querySelector('#send')
         btnVoice.classList.add("start")
 
         btnVoice.addEventListener('click', function () {
@@ -52,9 +53,18 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
         const mainaudio = new Audio;
         mainaudio.controls = true;
-        document.querySelector("#main_body").appendChild(mainaudio)
+        
         mediaRecorder.addEventListener("stop", function () {
-            const blob = new Blob(chunks, {
+            let blob = new Blob(chunks, {
+                type: 'audio/wav'
+            });
+            // creates interactive element in body
+            mainaudio.src = URL.createObjectURL(blob);
+        });
+        document.querySelector("#text-container").appendChild(mainaudio)
+
+        btnSend.addEventListener('click', function() {
+            let blob = new Blob(chunks, {
                 type: 'audio/wav'
             });
             console.log(chunks)
@@ -63,10 +73,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
             sendRecord(fd).then(r => {
                 console.log("SUCCESS!")
             })
-
-            // creates interactive element in body
-            mainaudio.src = URL.createObjectURL(blob);
-        });
+        })
 
 
     });

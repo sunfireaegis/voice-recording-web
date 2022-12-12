@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice Recording</title>
+    <title>{{ title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -15,11 +15,13 @@
         <div id="main_body">
             <p>Задача № 1</p>
             <div id="text-container">
-                <div id="text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsum optio qui explicabo accusamus ab sed iste soluta porro dignissimos tenetur, itaque quos nulla! Saepe deserunt, quam nostrum consectetur eligendi sit.</div>
-                <div id="task">Lorem ipsum dolor sit amet.</div>
+                <div id="text">{{ text }}</div>
+                <div id="task">{{ task }}</div>
             </div>
             <div id="button-container" style="margin-bottom: 3vh;">
                 <a href="#" id="record" class="butt"><div>Запись</div></a>
+
+                <a href="#" id="send" class="butt"><div>Отправить</div></a>
             </div>
             <script src="{{ url_for('static', filename='js/script.js') }}"></script>
         </div>
