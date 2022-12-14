@@ -7,10 +7,20 @@ body {
 }
 .ui-form {
    max-width: 350px;
-   padding: 80px 30px 30px;
+   padding: 120px 70px 70px;
    margin: 50px auto 30px;
    background: white;
 }
+
+.center_block {
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
 .ui-form h3 {
    position: relative;
    z-index: 5;
@@ -85,10 +95,18 @@ body {
    padding: 0;
    line-height: 42px;
    background: #4a90e2;
-   border-width: 0;
    color: white;
    font-size: 20px;
+   border: #4a90e2 3px solid;
+   transition: all .3s ease-in-out;
 }
+
+.ui-form input[type="submit"]:hover {
+   cursor: pointer;
+   background: white;
+   color: #4a90e2;
+}
+
 .ui-form p {
    margin: 0;
    padding-top: 10px;
