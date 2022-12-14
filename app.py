@@ -51,15 +51,34 @@ def get_file():
         return render_template("index.html", title="testt")
 
 
-@app.route("/auth", methods=["POST", "GET"])
-def auth():
+@app.route("/reg", methods=["POST", "GET"])
+def reg():
     if request.method == "POST":
         login = request.form.get("uname")
         password = request.form.get("psw")
 
         with connection:
-            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (login, password,))
+            successful_auth = cursor.execute("INSERT INTO users (login, password) VALUES (?, ?)", (login, password,))
+            print(successful_auth)
+
         return redirect(url_for("page_after_auth"))
+    return render_template("reg.html")
+
+
+@app.route("/auth", methods=["GET", "POST"])
+def auth():
+    if request.method == "POST":
+        app.logger.warning("teststastdsta")
+
+        login = request.form.get("uname")
+        password = request.form.get("psw")
+
+        with connection:
+            successful_auth = bool(len(cursor.execute("SELECT * FROM users WHERE login=? and password=?", (login, password,)).fetchall()))
+            app.logger.warning(successful_auth)
+        if successful_auth:
+            return redirect(url_for("page_after_auth"))
+        return render_template("auth.html", error=True)
     return render_template("auth.html")
 
 
