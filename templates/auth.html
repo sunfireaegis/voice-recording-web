@@ -13,6 +13,9 @@
         <form method="post" action="" class="ui-form">
         <h3>Вход</h3>
         <div class="form-row">
+            {% if error %}
+                <p id="error">Такого аккаунта не существует!</p> 
+            {% endif %}
         <input name="uname" type="text" id="email" required autocomplete="off"><label for="email">Логин</label>
         </div>
         <div class="form-row">

@@ -28,6 +28,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
         const btnVoice = document.querySelector('#record')
         const btnSend = document.querySelector('#send')
+        const btnStop = document.querySelector('#stop')
         btnVoice.classList.add("start")
 
         btnVoice.addEventListener('click', function () {
@@ -62,6 +63,17 @@ navigator.mediaDevices.getUserMedia({audio: true})
             mainaudio.src = URL.createObjectURL(blob);
         });
         document.querySelector("#text-container").appendChild(mainaudio)
+
+
+        // btnStop.addEventListener('click', function() {
+        //     if (mediaRecorder.state === 'paused') {
+        //         mediaRecorder.resume()
+        //         btnStop.innerHTML = "Пауза"
+        //     } else if (mediaRecorder.state === "recording") {
+        //         mediaRecorder.pause()
+        //         btnStop.innerHTML = "На паузе"
+        //     }
+        // })
 
         btnSend.addEventListener('click', function() {
             let blob = new Blob(chunks, {

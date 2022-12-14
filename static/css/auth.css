@@ -111,3 +111,10 @@ body {
    margin: 0;
    padding-top: 10px;
 }
+
+#error {
+   color:#F77A52;
+   font-size: 18px;
+   text-align: center;
+   margin: 50px;
+}

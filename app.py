@@ -4,14 +4,10 @@ from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
+import csv
 
 connection = sqlite3.connect("database.db", check_same_thread=False)
 cursor = connection.cursor()
-
-# from OpenSSL import SSL
-# context = SSL.Context(SSL.PR)
-# context.use_privatekey_file('server.key')
-# context.use_certificate_file('server.crt')
 
 app = Flask("voice_recorder")
 
@@ -22,11 +18,12 @@ folder = "/home/main/projects/voice-recording-web"
 
 @app.route("/index")
 def page_after_auth():
-    with open('text.txt') as text:
-        f1 = text.read()
-    with open('task.txt') as task:
-        f2 = task.read()
-    return render_template("index.html", title="testt", text=f1, task=f2)
+    with open("task.csv", "r") as task:
+            reader = csv.reader(task, delimiter=',')
+            head = reader.__next__()
+            for i in reader:
+                app.logger.warning(i)
+                return render_template("index.html", title="testt", text=i[0], task=i[1])
 
 
 @app.route("/", methods=["GET"])
@@ -68,7 +65,7 @@ def reg():
 @app.route("/auth", methods=["GET", "POST"])
 def auth():
     if request.method == "POST":
-        app.logger.warning("teststastdsta")
+        # app.logger.warning("teststastdsta")
 
         login = request.form.get("uname")
         password = request.form.get("psw")
