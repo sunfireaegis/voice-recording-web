@@ -2,3 +2,5 @@ env/
 files/
 __pycache__/
 .vscode/
+README.md
+recording/

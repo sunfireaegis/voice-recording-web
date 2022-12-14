@@ -1,6 +1,7 @@
-const form = document.getElementById('auth')
+const form = document.forms[0]
 form.addEventListener('submit', function(event) {
-    event.preventDefault()
+    event.preventDeafault()
+
     const data = new FormData(form)
     fetch('/', {
         method: 'POST',

@@ -1,8 +1,13 @@
-from flask import Flask, render_template, request
+import sqlite3
+
+from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
-import csv
+
+connection = sqlite3.connect("database.db", check_same_thread=False)
+cursor = connection.cursor()
+
 # from OpenSSL import SSL
 # context = SSL.Context(SSL.PR)
 # context.use_privatekey_file('server.key')
@@ -10,21 +15,24 @@ import csv
 
 app = Flask("voice_recorder")
 
-
 app.config['UPLOAD_FOLDER'] = 'files/'
 
 folder = "/home/main/projects/voice-recording-web"
-@app.route("/")
-def index():
+
+
+@app.route("/index")
+def page_after_auth():
     with open('text.txt') as text:
         f1 = text.read()
     with open('task.txt') as task:
         f2 = task.read()
     return render_template("index.html", title="testt", text=f1, task=f2)
 
-@app.route("/auth")
-def auth():
-    return render_template("auth.html")
+
+@app.route("/", methods=["GET"])
+def main():
+    return redirect(url_for("auth"))  # redirect(...)
+
 
 @app.route("/recording", methods=["POST"])
 def get_file():
@@ -32,13 +40,28 @@ def get_file():
         app.logger.warning('log begin')
         app.logger.warning(request.files.get('voice'))
         file = request.files.get('voice')
-        filename = secure_filename(file.filename) + f'{datetime.now()}' +'.wav'
+        filename = secure_filename(file.filename) + f'{datetime.now()}' + '.wav'
 
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         app.logger.warning('log end')
+
+        with connection:
+            cursor.execute("UPDATE users SET ")
+
         return render_template("index.html", title="testt")
 
 
+@app.route("/auth", methods=["POST", "GET"])
+def auth():
+    if request.method == "POST":
+        login = request.form.get("uname")
+        password = request.form.get("psw")
+
+        with connection:
+            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (login, password,))
+        return redirect(url_for("page_after_auth"))
+    return render_template("auth.html")
+
 
 if __name__ == '__main__':
-    app.run(host="localhost", port=5000, debug=True, ssl_context="adhoc")
+    app.run(host="localhost", port=5000, ssl_context="adhoc")

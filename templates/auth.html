@@ -10,7 +10,7 @@
 </head>
 <body>
     <div id="root">
-        <form id="auth" action="" method="post">
+        <form name="auth" action="" method="post">
             <div class="container">
                 <label for="uname"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="uname" required>
@@ -20,6 +20,7 @@
                 <button type="submit">Login</button>
               </div>
         </form>
+        <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
     </div>
 </body>
 </html>
