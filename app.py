@@ -22,6 +22,9 @@ def index():
         f2 = task.read()
     return render_template("index.html", title="testt", text=f1, task=f2)
 
+@app.route("/auth")
+def auth():
+    return render_template("auth.html")
 
 @app.route("/recording", methods=["POST"])
 def get_file():
