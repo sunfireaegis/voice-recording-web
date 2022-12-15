@@ -20,6 +20,11 @@ function addElement(e) {
     this.appendChild(addDiv);
 }
 
+const account = document.createElement('p')
+const beg = document.cookie.indexOf('=')
+account.innerHTML = `Ваш аккаунт - ${document.cookie.slice(beg+1)}`
+document.querySelector('#main_body').appendChild(account)
+
 
 navigator.mediaDevices.getUserMedia({audio: true})
     .then(stream => {
@@ -28,7 +33,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
         const btnVoice = document.querySelector('#record')
         const btnSend = document.querySelector('#send')
-        const btnStop = document.querySelector('#stop')
+        const btnStop = document.querySelector('#pause')
         btnVoice.classList.add("start")
 
         btnVoice.addEventListener('click', function () {
@@ -65,15 +70,15 @@ navigator.mediaDevices.getUserMedia({audio: true})
         document.querySelector("#text-container").appendChild(mainaudio)
 
 
-        // btnStop.addEventListener('click', function() {
-        //     if (mediaRecorder.state === 'paused') {
-        //         mediaRecorder.resume()
-        //         btnStop.innerHTML = "Пауза"
-        //     } else if (mediaRecorder.state === "recording") {
-        //         mediaRecorder.pause()
-        //         btnStop.innerHTML = "На паузе"
-        //     }
-        // })
+        btnStop.addEventListener('click', function() {
+            if (mediaRecorder.state === 'paused') {
+                mediaRecorder.resume()
+                btnStop.innerHTML = "Пауза"
+            } else if (mediaRecorder.state === "recording") {
+                mediaRecorder.pause()
+                btnStop.innerHTML = "На паузе"
+            }
+        })
 
         btnSend.addEventListener('click', function() {
             let blob = new Blob(chunks, {
@@ -82,11 +87,12 @@ navigator.mediaDevices.getUserMedia({audio: true})
             console.log(chunks)
             let fd = new FormData();
             fd.append('voice', blob);
+            fd.append('author', document.cookie.slice(beg+1))
             sendRecord(fd).then(r => {
                 console.log("SUCCESS!")
+                console.log(fd.get('author'))
             })
         })
-
 
     });
 

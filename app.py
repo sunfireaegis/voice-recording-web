@@ -1,6 +1,6 @@
 import sqlite3
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, make_response
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
@@ -21,9 +21,8 @@ def page_after_auth():
     with open("task.csv", "r") as task:
             reader = csv.reader(task, delimiter=',')
             head = reader.__next__()
-            for i in reader:
-                app.logger.warning(i)
-                return render_template("index.html", title="testt", text=i[0], task=i[1])
+            tmp = reader.__next__()
+            return render_template("index.html", title="testt", text=tmp[0], task=tmp[1])
 
 
 @app.route("/", methods=["GET"])
@@ -35,15 +34,16 @@ def main():
 def get_file():
     if request.method == "POST":
         app.logger.warning('log begin')
-        app.logger.warning(request.files.get('voice'))
+        app.logger.warning(dir(request), request.form.get('author'))
         file = request.files.get('voice')
-        filename = secure_filename(file.filename) + f'{datetime.now()}' + '.wav'
+        author = request.files.get('author')
+        filename = secure_filename(file.filename) + f'{datetime.now()}_{author}' + '.wav'
 
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         app.logger.warning('log end')
 
-        with connection:
-            cursor.execute("UPDATE users SET ")
+        # with connection:
+        #     cursor.execute("UPDATE users SET ")
 
         return render_template("index.html", title="testt")
 
@@ -74,7 +74,10 @@ def auth():
             successful_auth = bool(len(cursor.execute("SELECT * FROM users WHERE login=? and password=?", (login, password,)).fetchall()))
             app.logger.warning(successful_auth)
         if successful_auth:
-            return redirect(url_for("page_after_auth"))
+            # return redirect(url_for("page_after_auth"), )\
+            response = make_response(redirect(url_for("page_after_auth")))
+            response.set_cookie('uname', login)
+            return response
         return render_template("auth.html", error=True)
     return render_template("auth.html")
 

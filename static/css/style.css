@@ -17,7 +17,6 @@ body {
 }
 
 header {
-    display: -webkit-flex;
     display: flex;
     flex-shrink: 0;
     position: sticky;
@@ -46,7 +45,7 @@ header > div {
     width: 70%;
     height: 700px;
     align-self: center;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     overflow-x: clip;
 }
 
@@ -82,6 +81,10 @@ header > div {
     text-align: justify;
     border: 2px solid #f5dfe6;
     border-radius: 10px;
+}
+
+audio {
+    width: 30%;
 }
 
 #button-container {
