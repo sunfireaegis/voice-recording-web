@@ -13,7 +13,7 @@
             <div>Logo place</div>
         </header>
         <div id="main_body">
-            <p id="task_number">Задача</p>
+            <p>Задача №<span id="task_number">{{ n }}</span></p>
             <div id="text-container">
                 <div id="text">{{ text }}</div>
                 <div id="task">{{ task }}</div>
@@ -23,6 +23,8 @@
                 <a href="#" id="pause" class="butt"><div>Пауза</div></a>
 
                 <a href="#" id="send" class="butt"><div>Отправить</div></a>
+                <!-- <a href="#" id="skip" class="butt"><div>Пропустить</div></a> -->
+
             </div>
             <script src="{{ url_for('static', filename='js/script.js') }}"></script>
         </div>

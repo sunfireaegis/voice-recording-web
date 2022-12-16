@@ -24,6 +24,7 @@ const account = document.createElement('p')
 const beg = document.cookie.indexOf('=')
 account.innerHTML = `Ваш аккаунт - ${document.cookie.slice(beg+1)}`
 document.querySelector('#main_body').appendChild(account)
+console.log(document.cookie.slice(beg+1))
 
 
 navigator.mediaDevices.getUserMedia({audio: true})
@@ -34,6 +35,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
         const btnVoice = document.querySelector('#record')
         const btnSend = document.querySelector('#send')
         const btnStop = document.querySelector('#pause')
+        // const btnSkip = document.querySelector('#skip')
         btnVoice.classList.add("start")
 
         btnVoice.addEventListener('click', function () {
@@ -88,11 +90,25 @@ navigator.mediaDevices.getUserMedia({audio: true})
             let fd = new FormData();
             fd.append('voice', blob);
             fd.append('author', document.cookie.slice(beg+1))
+            let number = document.querySelector('#task_number')
+            fd.append('cur_task', number.innerHTML)
             sendRecord(fd).then(r => {
                 console.log("SUCCESS!")
                 console.log(fd.get('author'))
             })
+            location.reload()
         })
+        // btnSkip.addEventListener('click', function() {
+        //     let skipFd = new FormData()
+        //     skipFd.append('skip', true)
+        //     let number = document.querySelector('#task_number')
+        //     skipFd.append('cur_task', number.innerHTML)
+        //     fetch('/recording', {
+        //         method: 'POST',
+        //         body: skipFd
+        //     })
+        //     location.reload()
+        // }) 
 
     });
 

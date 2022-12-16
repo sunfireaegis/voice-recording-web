@@ -15,14 +15,26 @@ app.config['UPLOAD_FOLDER'] = 'files/'
 
 folder = "/home/main/projects/voice-recording-web"
 
+to_read = list()
+skipped = list() # data, skipped, number
+with open("task.csv", "r") as task:
+    reader = csv.reader(task, delimiter=',')
+    head = reader.__next__()
+    for i, elem in enumerate(reader):
+        to_read.append([elem, False])  # data, already_read
+
+
 
 @app.route("/index")
 def page_after_auth():
-    with open("task.csv", "r") as task:
-            reader = csv.reader(task, delimiter=',')
-            head = reader.__next__()
-            tmp = reader.__next__()
-            return render_template("index.html", title="testt", text=tmp[0], task=tmp[1])
+    # app.logger.warning(to_read)
+    for i, el in enumerate(to_read):
+        # app.logger.warning(el)
+        if not el[1]:
+            return render_template("index.html", title="testt", text=el[0][0], task=el[0][1], n=i)
+
+
+    return render_template('index.html', title='task', text="Заданий больше нет", task=None, n=-1)
 
 
 @app.route("/", methods=["GET"])
@@ -34,18 +46,27 @@ def main():
 def get_file():
     if request.method == "POST":
         app.logger.warning('log begin')
-        app.logger.warning(dir(request), request.form.get('author'))
+        # app.logger.warning(dir(request), request.form.get('author'))
         file = request.files.get('voice')
-        author = request.files.get('author')
-        filename = secure_filename(file.filename) + f'{datetime.now()}_{author}' + '.wav'
+        author = request.form.get('author')
+        cur_task = request.form.get('cur_task')
+        is_skipped = request.form.get('skip')
 
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        app.logger.warning('log end')
+        app.logger.warning(cur_task, is_skipped)
+
+        if is_skipped is True: # handling text skipping
+            to_read[int(cur_task)][1] = True
+            skipped.append([to_read[int(cur_task)][0]], int(cur_task))
+        elif cur_task != '-1':
+            filename = secure_filename(file.filename) + f'{datetime.now()}_{author}_{cur_task}' + '.wav'
+            to_read[int(cur_task)][1] = True
+            
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
         # with connection:
         #     cursor.execute("UPDATE users SET ")
-
-        return render_template("index.html", title="testt")
+        # app.logger.warning(to_read)
+        return redirect(url_for("page_after_auth"))
 
 
 @app.route("/reg", methods=["POST", "GET"])
