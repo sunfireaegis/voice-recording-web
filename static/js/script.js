@@ -5,7 +5,7 @@ forEach.call(buttons, function (b) {
     b.addEventListener('click', addElement);
 });
 
-function addElement(e) {
+function addElement(e) { // ???
     var addDiv = document.createElement('div'),
         mValue = Math.max(this.clientWidth, this.clientHeight),
         rect = this.getBoundingClientRect();
@@ -20,11 +20,12 @@ function addElement(e) {
     this.appendChild(addDiv);
 }
 
-const account = document.createElement('p')
+const account = document.createElement('p') // account name displayed
 const beg = document.cookie.indexOf('=')
 account.innerHTML = `Ваш аккаунт - ${document.cookie.slice(beg+1)}`
 document.querySelector('#main_body').appendChild(account)
-console.log(document.cookie.slice(beg+1))
+
+// console.log(document.cookie.slice(beg+1))
 
 
 navigator.mediaDevices.getUserMedia({audio: true})
@@ -32,10 +33,13 @@ navigator.mediaDevices.getUserMedia({audio: true})
         const mediaRecorder = new MediaRecorder(stream);
         let chunks = [] // array for binary audio
 
-        const btnVoice = document.querySelector('#record')
+        const btnVoice = document.querySelector('#record') // definig buttons
         const btnSend = document.querySelector('#send')
         const btnStop = document.querySelector('#pause')
-        // const btnSkip = document.querySelector('#skip')
+        const btnSkip = document.querySelector('#skip')
+
+
+
         btnVoice.classList.add("start")
 
         btnVoice.addEventListener('click', function () {
@@ -59,7 +63,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
             chunks.push(event.data);
         };
 
-        const mainaudio = new Audio;
+        const mainaudio = new Audio; // audio player object
         mainaudio.controls = true;
         
         mediaRecorder.addEventListener("stop", function () {
@@ -81,34 +85,46 @@ navigator.mediaDevices.getUserMedia({audio: true})
                 btnStop.innerHTML = "На паузе"
             }
         })
+        
 
-        btnSend.addEventListener('click', function() {
+
+        btnSend.addEventListener('click', function() { // sending a request with audiofile
             let blob = new Blob(chunks, {
                 type: 'audio/wav'
             });
-            console.log(chunks)
+            let number = document.querySelector('#task_number')
+
+
             let fd = new FormData();
             fd.append('voice', blob);
             fd.append('author', document.cookie.slice(beg+1))
-            let number = document.querySelector('#task_number')
             fd.append('cur_task', number.innerHTML)
+            
             sendRecord(fd).then(r => {
                 console.log("SUCCESS!")
                 console.log(fd.get('author'))
             })
-            location.reload()
+
+            location.reload() // updating page to refresh text
         })
-        // btnSkip.addEventListener('click', function() {
-        //     let skipFd = new FormData()
-        //     skipFd.append('skip', true)
-        //     let number = document.querySelector('#task_number')
-        //     skipFd.append('cur_task', number.innerHTML)
-        //     fetch('/recording', {
-        //         method: 'POST',
-        //         body: skipFd
-        //     })
-        //     location.reload()
-        // }) 
+
+
+        btnSkip.addEventListener('click', function() {
+
+            let number = document.querySelector('#task_number')
+
+            let skipFd = new FormData()
+
+            skipFd.append('author', document.cookie.slice(beg+1))
+            skipFd.append('cur_task', number.innerHTML)
+
+            skipFd.append('skip', true)
+
+            sendRecord(skipFd).then((e) => {
+                console.log('Task Skipped')
+            })
+            location.reload()
+        }) 
 
     });
 
