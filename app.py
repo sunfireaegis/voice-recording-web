@@ -22,16 +22,21 @@ app = Flask("voice_recorder")
 
 if not os.path.exists('files/'):
     os.mkdir('files')
+    os.system('touch files/written.txt')
 
 app.config['UPLOAD_FOLDER'] = 'files/'
 
 folder = "/home/main/projects/voice-recording-web"
 
+file_list = os.listdir('csv/')
+
 to_read = dict()
+num_list = set()
 with open("csv/task.csv", "r") as task:
     reader = csv.reader(task, delimiter=',')
     head = reader.__next__()
     for i, elem in enumerate(reader):
+        num_list.add(f'{elem[2]}\n')
         to_read.update({elem[2]: [elem[:2], False, None, set()]})  # tasl_id: data{text, task}, already_read, taken, skipped_by{uname}
 
 
@@ -39,7 +44,6 @@ with open("csv/task.csv", "r") as task:
 @app.route("/index", methods=['POST'])
 def page_after_auth():
     uname = request.args['uname']
-    # app.logger.warning(to_read)
     for el in to_read:
         cur = to_read[el]
         if not cur[1] and not (uname in cur[3]) and cur[2] is None: # if text is free yet
@@ -48,8 +52,7 @@ def page_after_auth():
         elif cur[2] == uname: # if you reloaded page (state of 'taken' arg is the same)
             return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el)
 
-    print(os.listdir('files/'))
-
+    
     return render_template('index.html', title='task', text="Заданий больше нет", task=None, n=-1)
 
 
@@ -88,8 +91,12 @@ def get_file():
             filename = f'id_{cur_task}_{author}_{datetime.now()}' + '.wav' 
             
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            logging.info(f'file {filename} is written correctly')
+            with open('files/written.txt', 'r+') as prefix:
+                prefix.write(f'{cur_task}')
+                print(set([line for line in prefix.readlines()]))
 
+            logging.info(f'file {filename} is written correctly')
+        
         return redirect(url_for("page_after_auth", uname=author), code=307)
 
 
@@ -130,4 +137,4 @@ def auth():
 
 if __name__ == '__main__':
     logging.info(f'server started at {datetime.now()}')
-    app.run(host="localhost", port=5000, ssl_context="adhoc", debug=True)
+    app.run(host="localhost", port=5000, ssl_context="adhoc")
