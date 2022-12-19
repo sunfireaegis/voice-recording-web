@@ -16,15 +16,13 @@
             <p>Задача №<span id="task_number">{{ n }}</span></p>
             <div id="text-container">
                 <div id="text">{{ text }}</div>
-                <div id="task">{{ task }}</div>
+                <div id="task"><div class="task_text">{{ task }}</div></div>
             </div>
             <div id="button-container" style="margin-bottom: 3vh;">
                 <a href="#" id="record" class="butt"><div>Запись</div></a>
-                <a href="#" id="pause" class="butt"><div style="position: absolute; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka-d vpalka"></div><div class="vpalka vpalka-d "></div></div></a>
-
+                <a href="#" id="pause" class="butt dp-none"><div style="position: absolute; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka"></div><div class="vpalka"></div></div></a>
                 <a href="#" id="send" class="butt"><div>Отправить</div></a>
                 <a href="#" id="skip" class="butt"><div>Пропустить</div></a>
-
             </div>
             <script src="{{ url_for('static', filename='js/script.js') }}"></script>
         </div>

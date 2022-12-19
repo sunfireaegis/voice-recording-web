@@ -1,6 +1,6 @@
 * {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
+    font-size: calc(1vh + 4px);
     color: #f5dfe6;
 }
 
@@ -11,15 +11,18 @@
     align-items: center;
 }
 
+@media screen and (max-width: 1272px) {
+    #text-container {
+        flex-flow: column wrap!important;
+        align-items: center!important;
+    }
+}
+
 .triangle{
     position: absolute;
     border: 8px solid transparent;
     border-left: 15px solid white;
     margin-left: 12px!important;
-}
-
-.vpalka-d {
-    opacity: 0.6;
 }
 
 .vpalka{
@@ -65,12 +68,12 @@ header > div {
 #main_body {
     display: flex;
     margin-top: 10px;
-    flex-flow: column wrap;
+    flex-direction: column;
     width: 70%;
-    height: 700px;
     align-self: center;
     /* overflow-y: scroll; */
     overflow-x: clip;
+    gap: 20px;
 }
 
 #main_body > p {
@@ -83,6 +86,7 @@ header > div {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-evenly;
+    gap: 20px;
 }
 
 #text {
@@ -99,12 +103,17 @@ header > div {
 #task {
     margin: 10px;
     padding: 5px;
-    font-size: 20px;
     width: 30%;
-    text-indent: 2em;
-    text-align: justify;
     border: 2px solid #f5dfe6;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.task_text {
+    font-size: 20px;
+    text-align: center;
 }
 
 audio {
@@ -117,7 +126,12 @@ audio {
     gap: 12px;
     flex-direction: row;
     justify-content: space-around;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+}
+
+.dp-none{
+    display: none!important;
 }
 
 .butt {

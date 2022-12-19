@@ -36,17 +36,12 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
         const btnVoice = document.querySelector('#record') // definig buttons
         const btnSend = document.querySelector('#send')
-        const btnStop = document.querySelector('#pause')
+        const btnPause = document.querySelector("#pause")
         const btnSkip = document.querySelector('#skip')
 
-
-
         btnVoice.classList.add("start")
-
         btnVoice.addEventListener('click', function () {
-            document.querySelectorAll(".vpalka").forEach((i) => {
-                i.classList.toggle('vpalka-d')
-            })
+            btnPause.classList.toggle("dp-none")
             if (btnVoice.innerHTML.includes("Запись")) {
                 mediaRecorder.start();
                 btnVoice.classList.replace("start", "stop")
@@ -56,8 +51,6 @@ navigator.mediaDevices.getUserMedia({audio: true})
             } else if (btnVoice.innerHTML.includes("Стоп")) {
                 mediaRecorder.stop();
                 btnVoice.classList.replace("stop", "start")
-                                btnStop.innerHTML = '<div style="position: absolute; margin: 12px; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka"></div><div class="vpalka"></div></div>'
-
 
                 btnVoice.innerHTML = "<div>Запись</div>"
                 btnVoice.id = "start"
@@ -80,15 +73,15 @@ navigator.mediaDevices.getUserMedia({audio: true})
         document.querySelector("#text-container").appendChild(mainaudio)
 
 
-        btnStop.addEventListener('click', function() {
+        btnPause.addEventListener('click', function() {
             if (mediaRecorder.state === 'paused') {
                 mediaRecorder.resume()
-                btnStop.innerHTML = '<div style="position: absolute; margin: 12px; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka"></div><div class="vpalka"></div></div>'
+                btnPause.innerHTML = '<div style="position: absolute; margin: 12px; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka"></div><div class="vpalka"></div></div>'
 
             } else if (mediaRecorder.state === "recording") {
                 mediaRecorder.pause()
-                btnStop.innerHTML = "<div class='triangle''></div>"
-                btnStop.style.position = 'relative'
+                btnPause.innerHTML = "<div class='triangle''></div>"
+                btnPause.style.position = 'relative'
             }
         })
         
