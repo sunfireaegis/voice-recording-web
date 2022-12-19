@@ -4,6 +4,30 @@
     color: #f5dfe6;
 }
 
+#pause {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+}
+
+.triangle{
+    position: absolute;
+    border: 8px solid transparent;
+    border-left: 15px solid white;
+    margin-left: 12px!important;
+}
+
+.vpalka-d {
+    opacity: 0.6;
+}
+
+.vpalka{
+    width: 4px;
+    height: 15px;
+    background-color: #e6f4fd;
+}
+
 body {
     height: 100%;
     background-color: #2a2929;

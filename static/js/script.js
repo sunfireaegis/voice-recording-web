@@ -22,7 +22,8 @@ function addElement(e) { // ???
 
 const account = document.createElement('p') // account name displayed
 const beg = document.cookie.indexOf('=')
-account.innerHTML = `Ваш аккаунт - ${document.cookie.slice(beg+1)}`
+
+account.innerHTML = `Ваш аккаунт - ${document.cookie.split('uname=')[1]}`
 document.querySelector('#main_body').appendChild(account)
 
 // console.log(document.cookie.slice(beg+1))
@@ -43,10 +44,11 @@ navigator.mediaDevices.getUserMedia({audio: true})
         btnVoice.classList.add("start")
 
         btnVoice.addEventListener('click', function () {
-            console.log(btnVoice.classList)
+            document.querySelectorAll(".vpalka").forEach((i) => {
+                i.classList.toggle('vpalka-d')
+            })
             if (btnVoice.innerHTML.includes("Запись")) {
                 mediaRecorder.start();
-
                 btnVoice.classList.replace("start", "stop")
 
                 btnVoice.innerHTML = "<div>Стоп</div>"
@@ -54,6 +56,8 @@ navigator.mediaDevices.getUserMedia({audio: true})
             } else if (btnVoice.innerHTML.includes("Стоп")) {
                 mediaRecorder.stop();
                 btnVoice.classList.replace("stop", "start")
+                                btnStop.innerHTML = '<div style="position: absolute; margin: 12px; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka"></div><div class="vpalka"></div></div>'
+
 
                 btnVoice.innerHTML = "<div>Запись</div>"
                 btnVoice.id = "start"
@@ -79,10 +83,12 @@ navigator.mediaDevices.getUserMedia({audio: true})
         btnStop.addEventListener('click', function() {
             if (mediaRecorder.state === 'paused') {
                 mediaRecorder.resume()
-                btnStop.innerHTML = "Пауза"
+                btnStop.innerHTML = '<div style="position: absolute; margin: 12px; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka"></div><div class="vpalka"></div></div>'
+
             } else if (mediaRecorder.state === "recording") {
                 mediaRecorder.pause()
-                btnStop.innerHTML = "На паузе"
+                btnStop.innerHTML = "<div class='triangle''></div>"
+                btnStop.style.position = 'relative'
             }
         })
         

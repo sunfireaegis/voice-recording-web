@@ -1,7 +1,6 @@
 import sqlite3
 
 from flask import Flask, render_template, request, redirect, url_for, make_response
-from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 import csv
@@ -26,13 +25,14 @@ if not os.path.exists('files/'):
 
 app.config['UPLOAD_FOLDER'] = 'files/'
 
-folder = "/home/main/projects/voice-recording-web"
+# folder = "/home/main/projects/voice-recording-web"
+folder = "C:\\Users\\hdhrh\\PycharmProjects\\MMM\\voice-recording-web"
 
 file_list = os.listdir('csv/')
 
 to_read = dict()
 num_list = set()
-with open("csv/task.csv", "r") as task:
+with open("csv/task.csv", "r", encoding="utf-8") as task:
     reader = csv.reader(task, delimiter=',')
     head = reader.__next__()
     for i, elem in enumerate(reader):
@@ -52,7 +52,7 @@ def page_after_auth():
         elif cur[2] == uname: # if you reloaded page (state of 'taken' arg is the same)
             return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el)
 
-    
+
     return render_template('index.html', title='task', text="Заданий больше нет", task=None, n=-1)
 
 
@@ -88,15 +88,15 @@ def get_file():
             except KeyError:
                 app.logger.warning('Unable to save EOF')
 
-            filename = f'id_{cur_task}_{author}_{datetime.now()}' + '.wav' 
-            
+            filename = f'id_{cur_task}_{author}_{datetime.now()}' + '.wav'
+
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             with open('files/written.txt', 'r+') as prefix:
                 prefix.write(f'{cur_task}')
                 print(set([line for line in prefix.readlines()]))
 
             logging.info(f'file {filename} is written correctly')
-        
+
         return redirect(url_for("page_after_auth", uname=author), code=307)
 
 
