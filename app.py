@@ -41,7 +41,7 @@ with open("csv/task.csv", "r", encoding="utf-8") as task:
 
 
 @app.route("/index", methods=['POST'])
-def page_after_auth():
+def page_after_auth(onSend=False):
     uname = request.args['uname']
     for el in to_read:
         cur = to_read[el]
@@ -51,7 +51,7 @@ def page_after_auth():
         elif cur[2] == uname:  # if you reloaded page (state of 'taken' arg is the same)
             return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el)
 
-    return render_template('index.html', title='task', text="Заданий больше нет", task=None, n=-1)
+    return render_template('index.html', title='task', text="Заданий больше нет", task=None, n=-1, onSend=onSend)
 
 
 @app.route("/", methods=["GET"])

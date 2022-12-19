@@ -40,11 +40,23 @@ navigator.mediaDevices.getUserMedia({audio: true})
         const btnPause = document.querySelector("#pause")
         const btnSkip = document.querySelector('#skip')
 
+        const timer = Object.assign(document.createElement("h2"), {innerHTML: 0})
+
+        setInterval(() => {
+            if (btnVoice.innerHTML.includes("Стоп")) {
+                timer.innerHTML++
+            }
+        }, 1000)
+
         btnVoice.classList.add("start")
         btnVoice.addEventListener('click', function () {
             setTimeout(() => {
                 btnPause.classList.toggle("dp-none")
                 if (btnVoice.innerHTML.includes("Запись")) {
+                    if (document.querySelector("#text-container").children.length === 2){
+                        document.querySelector("#text-container").appendChild(timer)
+                    }
+
                     mediaRecorder.start();
                     btnVoice.classList.replace("start", "stop")
 
@@ -76,7 +88,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
             // creates interactive element in body
             mainaudio.src = URL.createObjectURL(blob);
         });
-        document.querySelector("#text-container").appendChild(mainaudio)
+        document.querySelector("#audio-block").appendChild(mainaudio)
 
 
         btnPause.addEventListener('click', function() {

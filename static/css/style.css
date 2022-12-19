@@ -129,6 +129,13 @@ audio {
     flex-wrap: nowrap;
 }
 
+#audio-block{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media screen and (max-width: 740px) {
     #button-container{
         overflow-x: scroll;
