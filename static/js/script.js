@@ -1,4 +1,4 @@
-var buttons = document.getElementsByClassName('butt'), 
+var buttons = document.getElementsByClassName('butt'),
     forEach = Array.prototype.forEach;
 
 forEach.call(buttons, function (b) {
@@ -17,6 +17,7 @@ function addElement(e) { // ???
     sDiv.top = e.clientY - rect.top - (mValue / 2) + px;
 
     addDiv.classList.add('pulse');
+    addDiv.style.zIndex = "-1"
     this.appendChild(addDiv);
 }
 
@@ -41,20 +42,25 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
         btnVoice.classList.add("start")
         btnVoice.addEventListener('click', function () {
-            btnPause.classList.toggle("dp-none")
-            if (btnVoice.innerHTML.includes("Запись")) {
-                mediaRecorder.start();
-                btnVoice.classList.replace("start", "stop")
+            setTimeout(() => {
+                btnPause.classList.toggle("dp-none")
+                if (btnVoice.innerHTML.includes("Запись")) {
+                    mediaRecorder.start();
+                    btnVoice.classList.replace("start", "stop")
 
-                btnVoice.innerHTML = "<div>Стоп</div>"
-                btnVoice.id = "stop"
-            } else if (btnVoice.innerHTML.includes("Стоп")) {
-                mediaRecorder.stop();
-                btnVoice.classList.replace("stop", "start")
+                    btnVoice.innerHTML = "<div>Стоп</div>"
+                    btnVoice.id = "stop"
+                } else if (btnVoice.innerHTML.includes("Стоп")) {
+                    mediaRecorder.stop();
+                    btnVoice.classList.replace("stop", "start")
 
-                btnVoice.innerHTML = "<div>Запись</div>"
-                btnVoice.id = "start"
-            }
+                    btnVoice.innerHTML = "<div>Запись</div>"
+                    btnVoice.id = "start"
+
+                    btnPause.innerHTML = '<div style="position: absolute; margin: 12px; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka"></div><div class="vpalka"></div></div>'
+                }
+            }, 300)
+
         });
         mediaRecorder.ondataavailable = function (event) { // writing down audio
             chunks.push(event.data);
@@ -74,7 +80,8 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
 
         btnPause.addEventListener('click', function() {
-            if (mediaRecorder.state === 'paused') {
+            setTimeout(() => {
+                if (mediaRecorder.state === 'paused') {
                 mediaRecorder.resume()
                 btnPause.innerHTML = '<div style="position: absolute; margin: 12px; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka"></div><div class="vpalka"></div></div>'
 
@@ -83,46 +90,50 @@ navigator.mediaDevices.getUserMedia({audio: true})
                 btnPause.innerHTML = "<div class='triangle''></div>"
                 btnPause.style.position = 'relative'
             }
+            }, 300)
         })
         
 
 
         btnSend.addEventListener('click', function() { // sending a request with audiofile
-            let blob = new Blob(chunks, {
-                type: 'audio/wav'
-            });
-            let number = document.querySelector('#task_number')
+            setTimeout(() => {
+                let blob = new Blob(chunks, {
+                    type: 'audio/wav'
+                });
+                let number = document.querySelector('#task_number')
 
 
-            let fd = new FormData();
-            fd.append('voice', blob);
-            fd.append('author', document.cookie.slice(beg+1))
-            fd.append('cur_task', number.innerHTML)
-            
-            sendRecord(fd).then(r => {
-                console.log("SUCCESS!")
-                console.log(fd.get('author'))
-            })
+                let fd = new FormData();
+                fd.append('voice', blob);
+                fd.append('author', document.cookie.slice(beg + 1))
+                fd.append('cur_task', number.innerHTML)
 
-            location.reload() // updating page to refresh text
+                sendRecord(fd).then(r => {
+                    console.log("SUCCESS!")
+                    console.log(fd.get('author'))
+                })
+
+                location.reload() // updating page to refresh text
+            }, 300)
         })
 
 
         btnSkip.addEventListener('click', function() {
+            setTimeout(() => {
+                let number = document.querySelector('#task_number')
 
-            let number = document.querySelector('#task_number')
+                let skipFd = new FormData()
 
-            let skipFd = new FormData()
+                skipFd.append('author', document.cookie.slice(beg + 1))
+                skipFd.append('cur_task', number.innerHTML)
 
-            skipFd.append('author', document.cookie.slice(beg+1))
-            skipFd.append('cur_task', number.innerHTML)
+                skipFd.append('skip', true)
 
-            skipFd.append('skip', true)
-
-            sendRecord(skipFd).then((e) => {
-                console.log('Task Skipped')
-            })
-            location.reload()
+                sendRecord(skipFd).then((e) => {
+                    console.log('Task Skipped')
+                })
+                location.reload()
+            }, 300)
         }) 
 
     });

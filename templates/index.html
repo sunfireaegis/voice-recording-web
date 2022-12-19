@@ -22,7 +22,11 @@
                 <a href="#" id="record" class="butt"><div>Запись</div></a>
                 <a href="#" id="pause" class="butt dp-none"><div style="position: absolute; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka"></div><div class="vpalka"></div></div></a>
                 <a href="#" id="send" class="butt"><div>Отправить</div></a>
+                {% if text == "Заданий больше нет" %}
+                <a href="#" id="to_start" class="butt"><div>К началу</div></a>
+                {% else %}
                 <a href="#" id="skip" class="butt"><div>Пропустить</div></a>
+                {% endif %}
             </div>
             <script src="{{ url_for('static', filename='js/script.js') }}"></script>
         </div>

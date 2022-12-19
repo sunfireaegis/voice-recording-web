@@ -175,7 +175,7 @@ audio {
 }
 
 .start{
-    background: #218294;
+    background: transparent;
     color: #eee;
 }
 
@@ -210,7 +210,7 @@ audio {
 .pulse {
     background-color: aqua;
     border-radius: 50%;
-    animation: pulse 0.4s ease-out;
+    animation: pulse 0.36s ease-out;
     transform: scale(0);
     position: absolute;
 }
