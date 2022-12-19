@@ -127,7 +127,12 @@ audio {
     flex-direction: row;
     justify-content: space-around;
     flex-wrap: nowrap;
-    overflow-x: scroll;
+}
+
+@media screen and (max-width: 740px) {
+    #button-container{
+        overflow-x: scroll;
+    }
 }
 
 .dp-none{
