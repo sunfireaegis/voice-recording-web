@@ -112,22 +112,26 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
         btnSend.addEventListener('click', function () { // sending a request with audiofile
             setTimeout(() => {
-                let blob = new Blob(chunks, {
-                    type: 'audio/wav'
-                });
-                let number = document.querySelector('#task_number')
+                if (minutes * 60 + seconds >= 20) {
+                    let blob = new Blob(chunks, {
+                        type: 'audio/wav'
+                    });
+                    let number = document.querySelector('#task_number')
+                    let fd = new FormData();
+                    fd.append('voice', blob);
+                    fd.append('author', document.getElementById('account').innerHTML)
+                    fd.append('cur_task', number.innerHTML)
 
-                let fd = new FormData();
-                fd.append('voice', blob);
-                fd.append('author', document.getElementById('account').innerHTML)
-                fd.append('cur_task', number.innerHTML)
+                    sendRecord(fd).then(r => {
+                        console.log("SUCCESS!")
+                        console.log(fd.get('author'))
+                    })
 
-                sendRecord(fd).then(r => {
-                    console.log("SUCCESS!")
-                    console.log(fd.get('author'))
-                })
-
-                location.reload() // updating page to refresh text
+                    location.reload() // updating page to refresh text
+                }
+                else {
+                    alert("Длительность записи должна быть не меньше 20 секунд!")
+                }
             }, 300)
         })
 

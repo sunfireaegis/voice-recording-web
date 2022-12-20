@@ -14,7 +14,7 @@
         <h3>Вход</h3>
         <div class="form-row">
             {% if error %}
-                <p id="error" style="text-shadow: 3px 3px 1px rgba(255, 0, 0, 0.21);">Такого аккаунта не существует!</p>
+                <p id="error" style="text-shadow: 3px 3px 1px rgba(255, 0, 0, 0.21);">Неправильный логин или пароль!</p>
             {% endif %}
         <input name="uname" type="text" id="email" required autocomplete="off"><label for="email">Логин</label>
         </div>
@@ -22,7 +22,7 @@
         <input name="psw" type="password" id="password" required autocomplete="off"><label for="password">Пароль</label>
         </div>
         <p><input formmethod="post" id="submit_auth_form" type="submit" value="Войти"></p>
-            <h5>Нет аккаунта? <a href="/reg">Зарегестрируйся</a></h5>
+            <span style="font-size: 16px; margin-top: 10px; font-weight: 600; text-align: center">Нет аккаунта? <a href="/reg" style="text-decoration: none">Зарегестрируйся</a></span>
         </form>
     </div>
     <script src="{{ url_for('static', filename='js/auth.js')}}"></script>

@@ -66,7 +66,7 @@ def page_after_auth():
         used.add(i)
         return redirect(url_for("page_after_auth", uname=uname), code=307)
 
-    return render_template('index.html', title='task', text="Заданий больше нет", task=None, n=-1, uname=uname)
+    return render_template('index.html', title='task', text="Заданий больше нет", task="Можете идти отдыхать!", n=-1, uname=uname)
 
 
 @app.route("/", methods=["GET"])
@@ -118,12 +118,16 @@ def reg():
     if request.method == "POST":
         login = request.form.get("uname")
         password = request.form.get("psw")
+        password_access = (password == request.form.get("psw2"))
+        print(password_access)
 
         with connection:
             possible_user = cursor.execute("SELECT login FROM users WHERE login=?", (login,)).fetchall()
             if not bool(len(possible_user)):
                 cursor.execute("INSERT INTO users (login, password) VALUES (?, ?)", (login, password,))
                 logging.info(f'user {login} registrated succesfully')
+                if not password_access:
+                    return render_template("reg.html", password_different=True)
 
                 return redirect(url_for("page_after_auth", uname=login), code=307)
             return render_template("reg.html", userExists=True)
