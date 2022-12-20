@@ -21,6 +21,7 @@ function addElement(e) { // ???
     this.appendChild(addDiv);
 }
 
+console.log(document.getElementById('reset'))
 
 navigator.mediaDevices.getUserMedia({audio: true})
     .then(stream => {
@@ -130,26 +131,35 @@ navigator.mediaDevices.getUserMedia({audio: true})
             }, 300)
         })
 
-
         btnSkip.addEventListener('click', function () {
             setTimeout(() => {
-                let number = document.querySelector('#task_number')
+                if (document.querySelector(".task_text").innerHTML.includes("None")) {
+                    let resetFd = new FormData()
+                    resetFd.append('author', document.getElementById('account').innerHTML)
 
-                let skipFd = new FormData()
+                    sendReset(resetFd).then(() => {
+                        console.log("Tasks are reset")
+                        location.reload()
+                    })
+                }
+                else {
+                    let number = document.querySelector('#task_number')
+                    let skipFd = new FormData()
 
-                skipFd.append('author', document.getElementById('account').innerHTML)
-                skipFd.append('cur_task', number.innerHTML)
+                    skipFd.append('author', document.getElementById('account').innerHTML)
+                    skipFd.append('cur_task', number.innerHTML)
 
-                skipFd.append('skip', true)
+                    skipFd.append('skip', true)
 
-                sendRecord(skipFd).then((e) => {
-                    console.log('Task Skipped')
-                })
-                location.reload()
+                    sendRecord(skipFd).then((e) => {
+                        console.log('Task Skipped')
+                        location.reload()
+                    })
+                }
             }, 300)
         })
-
     });
+
 
 async function sendRecord(record) {
     let promise = await fetch('/recording', {
@@ -157,5 +167,12 @@ async function sendRecord(record) {
         body: record
     });
 }
+async function sendReset(data) {
+    let promise = await fetch('/reset', {
+        method: 'POST',
+        body: data
+    });
+}
+
 
 

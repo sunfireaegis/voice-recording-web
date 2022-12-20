@@ -122,7 +122,7 @@ def reg():
             successful_auth = cursor.execute("INSERT INTO users (login, password) VALUES (?, ?)", (login, password,))
             print(successful_auth)
         logging.info(f'user {login} registrated succesfully')
-        return redirect(url_for("page_after_auth", uname=login))
+        return redirect(url_for("page_after_auth", uname=login), code=307)
     return render_template("reg.html")
 
 
@@ -143,6 +143,14 @@ def auth():
         logging.error(f'failure authorize {login}: possibly may not exist')
         return render_template("auth.html", error=True)
     return render_template("auth.html")
+
+
+@app.route("/reset", methods=["POST"])
+def reset_texts():
+    uname = request.form.get('author')
+    for el in to_read:
+        to_read[el][3].discard(uname)
+    return redirect(url_for("page_after_auth", uname=uname), code=307)
 
 
 if __name__ == '__main__':
