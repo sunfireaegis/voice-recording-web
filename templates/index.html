@@ -10,23 +10,33 @@
 <body>
     <div id="wrapper">
         <header>
-            <div>Logo place</div>
+            <nav style="width: 100%;">
+                <ul style="list-style: none; width: 100%; display: flex; justify-content: space-between; align-items: center">
+                    <li><?xml version="1.0" ?><svg width="40" height="90" id="Слой_1" style="enable-background:new -379 381 40 40;" version="1.1" viewBox="-379 381 40 40" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><path d="M-359.1,410.2c4.7,0,8.5-3.8,8.5-8.5v-12.2c0-4.7-3.8-8.5-8.5-8.5c-4.7,0-8.5,3.8-8.5,8.5v12.2   C-367.6,406.4-363.8,410.2-359.1,410.2z M-365.6,400.6h4c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1h-4v-2h4c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1   h-4v-2h4c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1h-4v-1.1c0-3.6,2.9-6.5,6.5-6.5c3.6,0,6.5,2.9,6.5,6.5v1.1h-4c-0.6,0-1,0.4-1,1   c0,0.5,0.5,1,1,1h4v2h-4c-0.6,0-1,0.4-1,1c0,0.5,0.5,1,1,1h4v2h-4c-0.6,0-1,0.4-1,1c0,0.5,0.5,1,1,1h4v1.1c0,3.6-2.9,6.5-6.5,6.5   c-3.6,0-6.5-2.9-6.5-6.5V400.6z"/><path d="M-346.6,401.6c0-0.5-0.5-1-1-1s-1,0.5-1,1c0,5.8-4.7,10.5-10.5,10.5c-5.8,0-10.5-4.7-10.5-10.5c0-0.5-0.5-1-1-1s-1,0.5-1,1   c0,6.6,5.1,12,11.5,12.5v4.9h-6.5c-0.5,0-1,0.4-1,1s0.5,1,1,1h15c0.5,0,1-0.4,1-1s-0.5-1-1-1h-6.5v-4.9   C-351.7,413.6-346.6,408.2-346.6,401.6z"/></g></svg></li>
+                    <li style="margin-right: 4vw;">
+                        <a href="/" style="text-decoration: none; font-size: 23px; display: flex; align-items: center; gap: 5px">
+                        <span style="font-size: 18px; margin-bottom: 2px;">Log out</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><path fill="#000" d="M6 2a4 4 0 0 0-4 4v3h2V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3H2v3a4 4 0 0 0 4 4h12a4 4 0 0 0 4-4V6a4 4 0 0 0-4-4H6Z"/><path fill="#000" d="M3 11a1 1 0 1 0 0 2h9.582l-2.535 2.536a1 1 0 0 0 1.414 1.414l4.196-4.196a.998.998 0 0 0 0-1.508L11.46 7.05a1 1 0 1 0-1.414 1.414L12.582 11H3Z"/></svg>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </header>
         <div id="main_body">
             <p>Задача №<span id="task_number" style="font-size: 23px">{{ n }}</span></p>
             <div id="text-container">
                 <div id="text">{{ text }}</div>
-                <div id="task"><div class="task_text">{{ task }} Длина записи - от {{ min_l }} до {{ max_l }} секунд.</div></div>
+                <div id="task"><div class="task_text">{{ task }} Длина записи - от <span id="min_l" style="font-size: 23px">{{ min_l }}</span> до <span id="max_l" style="font-size: 23px">{{ max_l }}</span> секунд.</div></div>
             </div>
             <div id="button-container" style="margin-bottom: 3vh;">
-                <a href="#" id="record" class="butt"><div>Запись</div></a>
-                <a href="#" id="pause" class="butt dp-none"><div style="position: absolute; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div class="vpalka"></div><div class="vpalka"></div></div></a>
-                <a href="#" id="send" class="butt dp-none"><div>Отправить</div></a>
+                <a id="record" class="butt"><div>Запись</div></a>
+                <a id="pause" class="butt dp-none"><div style="position: absolute; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div class="vpalka"></div><div class="vpalka"></div></div></a>
+                <a id="send" class="butt dp-none"><div>Отправить</div></a>
 
                 {% if text == "Заданий больше нет" %}
-                    <a href="#" id="skip" class="butt"><div>К началу</div></a>
+                    <a id="skip" class="butt"><div>К началу</div></a>
                 {% else %}
-                    <a href="#" id="skip" class="butt"><div>Пропустить</div></a>
+                    <a id="skip" class="butt"><div>Пропустить</div></a>
                 {% endif %}
             </div>
             <div id="audio-block"></div>

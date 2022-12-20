@@ -35,7 +35,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
         let seconds = 0
         let minutes = 0
-        let timer = Object.assign(document.createElement("div"), {innerHTML: `<h1>${minutes}:${seconds}</h1>`})
+        let timer = Object.assign(document.createElement("div"), {innerHTML: `<span style="font-size: 20px">Таймер: ${minutes}:${seconds}</span>`})
 
 
         btnVoice.classList.add("start")
@@ -45,13 +45,17 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
                 btnPause.classList.toggle("dp-none")
                 if (btnVoice.innerHTML.includes("Запись")) {
+                    try {
+                        document.querySelector("#audio-block").removeChild(mainaudio)
+                    } catch (e) {
+                        console.log(e)
+                    }
                     if (document.querySelector("#text-container").children.length === 2) {
                         document.querySelector("#text-container").appendChild(timer)
                     }
                     if (!btnSend.classList.contains("dp-none")){
                         btnSend.classList.add("dp-none")
                     }
-
                     seconds = 0
                     minutes = 0
 
@@ -61,6 +65,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
                     btnVoice.innerHTML = "<div>Стоп</div>"
                     btnVoice.id = "stop"
                 } else if (btnVoice.innerHTML.includes("Стоп")) {
+                    document.querySelector("#audio-block").appendChild(mainaudio)
                     btnSend.classList.remove("dp-none")
 
                     mediaRecorder.stop();
@@ -81,8 +86,8 @@ navigator.mediaDevices.getUserMedia({audio: true})
         setInterval(() => {
             if (mediaRecorder.state === "recording") {
                 if (seconds === 60) {seconds = 0; minutes++} else {seconds++}
-                if (seconds < 10){timer.innerHTML = `<h1>${minutes}:0${seconds}</h1>`}
-                else {timer.innerHTML = `<h1>${minutes}:${seconds}</h1>`}
+                if (seconds < 10){timer.innerHTML = `<span style="font-size: 20px">Таймер: ${minutes}:0${seconds}</span>`}
+                else {timer.innerHTML = `<span style="font-size: 20px">Таймер: ${minutes}:${seconds}</span>`}
                 }
             }, 1000)
 
@@ -97,8 +102,6 @@ navigator.mediaDevices.getUserMedia({audio: true})
             // creates interactive element in body
             mainaudio.src = URL.createObjectURL(blob);
         });
-        document.querySelector("#audio-block").appendChild(mainaudio)
-
 
         btnPause.addEventListener('click', function () {
             btnPause.classList.toggle("pause")
@@ -136,7 +139,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
                     location.reload() // updating page to refresh text
                 }
                 else {
-                    alert("Длительность записи должна быть не меньше 20 секунд!")
+                    alert(`Длительность записи должна быть не меньше ${document.querySelector("#min_l").innerHTML} и не больше ${document.querySelector("#max_l").innerHTML} секунд!`)
                 }
             }, 300)
         })

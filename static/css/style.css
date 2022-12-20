@@ -34,6 +34,7 @@
 body {
     height: 100%;
     background-color: #2a2929;
+    overflow-x: hidden;
 }
 
 #wrapper {
@@ -52,7 +53,6 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px;
     border-radius: 10px;
     background: #4f303a;
 }
@@ -210,6 +210,7 @@ audio {
 
 .butt:hover {
     color: #fff;
+    cursor: pointer;
 }
 
 .butt:hover::before,
