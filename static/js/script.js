@@ -21,13 +21,6 @@ function addElement(e) { // ???
     this.appendChild(addDiv);
 }
 
-const account = document.createElement('p') // account name displayed
-const beg = document.cookie.indexOf('=')
-
-account.innerHTML = `Ваш аккаунт - ${document.cookie.split('uname=')[1]}`
-document.querySelector('#main_body').appendChild(account)
-
-// console.log(document.cookie.slice(beg+1))
 
 
 navigator.mediaDevices.getUserMedia({audio: true})
@@ -40,13 +33,10 @@ navigator.mediaDevices.getUserMedia({audio: true})
         const btnPause = document.querySelector("#pause")
         const btnSkip = document.querySelector('#skip')
 
-        const timer = Object.assign(document.createElement("h2"), {innerHTML: 0})
+        let seconds = 0
+        let minutes = 0
+        const timer = Object.assign(document.createElement("div"), {innerHTML: `${minutes}:${seconds}`})
 
-        setInterval(() => {
-            if (btnVoice.innerHTML.includes("Стоп")) {
-                timer.innerHTML++
-            }
-        }, 1000)
 
         btnVoice.classList.add("start")
         btnVoice.addEventListener('click', function () {
@@ -77,6 +67,16 @@ navigator.mediaDevices.getUserMedia({audio: true})
         mediaRecorder.ondataavailable = function (event) { // writing down audio
             chunks.push(event.data);
         };
+
+        setInterval(() => {
+            if (btnVoice.innerHTML.includes("Стоп")) {
+                if (seconds === 60) {
+                    seconds = 0
+                    minutes++
+                } else {}
+                seconds++
+            }
+        }, 1000)
 
         const mainaudio = new Audio; // audio player object
         mainaudio.controls = true;
@@ -117,7 +117,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
                 let fd = new FormData();
                 fd.append('voice', blob);
-                fd.append('author', document.cookie.slice(beg + 1))
+                fd.append('author', document.getElementById('account').innerHTML)
                 fd.append('cur_task', number.innerHTML)
 
                 sendRecord(fd).then(r => {
@@ -136,7 +136,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
                 let skipFd = new FormData()
 
-                skipFd.append('author', document.cookie.slice(beg + 1))
+                skipFd.append('author', document.getElementById('account').innerHTML)
                 skipFd.append('cur_task', number.innerHTML)
 
                 skipFd.append('skip', true)

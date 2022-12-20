@@ -47,11 +47,11 @@ def page_after_auth(onSend=False):
         cur = to_read[el]
         if not cur[1] and not (uname in cur[3]) and cur[2] is None:  # if text is free yet
             to_read[el][2] = uname
-            return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el)
+            return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el, uname=uname)
         elif cur[2] == uname:  # if you reloaded page (state of 'taken' arg is the same)
-            return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el)
+            return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el, uname=uname)
 
-    return render_template('index.html', title='task', text="Заданий больше нет", task=None, n=-1, onSend=onSend)
+    return render_template('index.html', title='task', text="Заданий больше нет", task=None, n=-1, onSend=onSend, uname=uname)
 
 
 @app.route("/", methods=["GET"])
