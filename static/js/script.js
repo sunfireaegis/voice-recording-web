@@ -41,15 +41,16 @@ navigator.mediaDevices.getUserMedia({audio: true})
         btnVoice.classList.add("start")
         btnVoice.addEventListener('click', function () {
             setTimeout(() => {
-                timer.innerHTML = "<h1>0:00</h1>"
-                seconds = 0
-                minutes = 0
+                // timer.innerHTML = "<h1>0:00</h1>"
+                
 
                 btnPause.classList.toggle("dp-none")
                 if (btnVoice.innerHTML.includes("Запись")) {
                     if (document.querySelector("#text-container").children.length === 2) {
                         document.querySelector("#text-container").appendChild(timer)
                     }
+                    seconds = 0
+                    minutes = 0
 
                     mediaRecorder.start();
                     btnVoice.classList.replace("start", "stop")
