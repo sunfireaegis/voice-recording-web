@@ -13,14 +13,14 @@
             <div>Logo place</div>
         </header>
         <div id="main_body">
-            <p>Задача №<span id="task_number">{{ n }}</span></p>
+            <p>Задача №<span id="task_number" style="font-size: 20px">{{ n }}</span></p>
             <div id="text-container">
                 <div id="text">{{ text }}</div>
                 <div id="task"><div class="task_text">{{ task }}</div></div>
             </div>
             <div id="button-container" style="margin-bottom: 3vh;">
                 <a href="#" id="record" class="butt"><div>Запись</div></a>
-                <a href="#" id="pause" class="butt dp-none"><div style="position: absolute; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka"></div><div class="vpalka"></div></div></a>
+                <a href="#" id="pause" class="butt dp-none"><div style="position: absolute; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div class="vpalka"></div><div class="vpalka"></div></div></a>
                 <a href="#" id="send" class="butt"><div>Отправить</div></a>
                 {% if text == "Заданий больше нет" %}
                 <a href="#" id="to_start" class="butt"><div>К началу</div></a>
@@ -29,7 +29,7 @@
                 {% endif %}
             </div>
             <div id="audio-block"></div>
-            <p>Ваш аккаунт - <span id="account">{{ uname }}</span></p>
+            <p>Ваш аккаунт - <span id="account" style="font-size: 20px">{{ uname }}</span></p>
             <script src="{{ url_for('static', filename='js/script.js') }}"></script>
         </div>
     </div>

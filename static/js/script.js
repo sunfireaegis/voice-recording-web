@@ -22,7 +22,6 @@ function addElement(e) { // ???
 }
 
 
-
 navigator.mediaDevices.getUserMedia({audio: true})
     .then(stream => {
         const mediaRecorder = new MediaRecorder(stream);
@@ -35,15 +34,19 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
         let seconds = 0
         let minutes = 0
-        const timer = Object.assign(document.createElement("div"), {innerHTML: `${minutes}:${seconds}`})
+        let timer = Object.assign(document.createElement("div"), {innerHTML: `<h1>${minutes}:${seconds}</h1>`})
 
 
         btnVoice.classList.add("start")
         btnVoice.addEventListener('click', function () {
             setTimeout(() => {
+                timer.innerHTML = "<h1>0:00</h1>"
+                seconds = 0
+                minutes = 0
+
                 btnPause.classList.toggle("dp-none")
                 if (btnVoice.innerHTML.includes("Запись")) {
-                    if (document.querySelector("#text-container").children.length === 2){
+                    if (document.querySelector("#text-container").children.length === 2) {
                         document.querySelector("#text-container").appendChild(timer)
                     }
 
@@ -69,18 +72,17 @@ navigator.mediaDevices.getUserMedia({audio: true})
         };
 
         setInterval(() => {
-            if (btnVoice.innerHTML.includes("Стоп")) {
-                if (seconds === 60) {
-                    seconds = 0
-                    minutes++
-                } else {}
-                seconds++
-            }
-        }, 1000)
+            if (mediaRecorder.state === "recording") {
+                if (seconds === 60) {seconds = 0; minutes++} else {seconds++}
+                if (seconds < 10){timer.innerHTML = `<h1>${minutes}:0${seconds}</h1>`}
+                else {timer.innerHTML = `<h1>${minutes}:${seconds}</h1>`}
+                }
+            }, 1000)
+
 
         const mainaudio = new Audio; // audio player object
         mainaudio.controls = true;
-        
+
         mediaRecorder.addEventListener("stop", function () {
             let blob = new Blob(chunks, {
                 type: 'audio/wav'
@@ -91,29 +93,28 @@ navigator.mediaDevices.getUserMedia({audio: true})
         document.querySelector("#audio-block").appendChild(mainaudio)
 
 
-        btnPause.addEventListener('click', function() {
+        btnPause.addEventListener('click', function () {
+            btnPause.classList.toggle("pause")
             setTimeout(() => {
                 if (mediaRecorder.state === 'paused') {
-                mediaRecorder.resume()
-                btnPause.innerHTML = '<div style="position: absolute; margin: 12px; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka"></div><div class="vpalka"></div></div>'
+                    mediaRecorder.resume()
+                    btnPause.innerHTML = '<div style="position: absolute; margin: 12px; max-width: 40%; display: flex; gap: 6px; justify-content: space-between"><div  class="vpalka"></div><div class="vpalka"></div></div>'
 
-            } else if (mediaRecorder.state === "recording") {
-                mediaRecorder.pause()
-                btnPause.innerHTML = "<div class='triangle''></div>"
-                btnPause.style.position = 'relative'
-            }
+                } else if (mediaRecorder.state === "recording") {
+                    mediaRecorder.pause()
+                    btnPause.innerHTML = "<div class='triangle''></div>"
+                    btnPause.style.position = 'relative'
+                }
             }, 300)
         })
-        
 
 
-        btnSend.addEventListener('click', function() { // sending a request with audiofile
+        btnSend.addEventListener('click', function () { // sending a request with audiofile
             setTimeout(() => {
                 let blob = new Blob(chunks, {
                     type: 'audio/wav'
                 });
                 let number = document.querySelector('#task_number')
-
 
                 let fd = new FormData();
                 fd.append('voice', blob);
@@ -130,7 +131,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
         })
 
 
-        btnSkip.addEventListener('click', function() {
+        btnSkip.addEventListener('click', function () {
             setTimeout(() => {
                 let number = document.querySelector('#task_number')
 
@@ -146,7 +147,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
                 })
                 location.reload()
             }, 300)
-        }) 
+        })
 
     });
 
