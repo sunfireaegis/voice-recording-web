@@ -9,15 +9,21 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="center_block">
+    <div class="center_block w-40">
         <form method="post" action="" class="ui-form">
         <h3>Регистрация</h3>
         <div class="form-row">
-        <input name="uname" type="text" id="email" required autocomplete="off"><label for="email">Логин</label>
+            {% if userExists %}
+                <p id="error" style="font-weight: 800; text-shadow: 3px 3px 1px rgba(255, 0, 0, 0.21);">Такой аккаунт уже существует!</p>
+            {% endif %}
+        <input name="uname" type="text" id="email" required autocomplete="off" style="font-size: 15px" placeholder="Никнейм"><label for="email"></label>
         </div>
         <div class="form-row">
-        <input name="psw" type="password" id="password" required autocomplete="off"><label for="password">Пароль</label>
+        <input name="psw" type="password" id="password" required autocomplete="off" style="font-size: 15px" placeholder="Пароль"><label for="password"></label>
         </div>
+            <div class="form-row">
+                <input name="psw" type="password" id="password" required autocomplete="off" style="font-size: 15px" placeholder="Подтвердите пароль">
+            </div>
         <p><input formmethod="post" id="submit_auth_form" type="submit" value="Отправить"></p>
         </form>
     </div>
