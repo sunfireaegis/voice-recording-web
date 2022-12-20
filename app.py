@@ -39,7 +39,7 @@ def read_file(name):
         for i, elem in enumerate(reader):
             num_list.add(f'{elem[2]}\n')
             to_read.update({elem[2]: [elem[:2], False, None,
-                                      set()]})  # tasl_id: data{text, task}, already_read, taken, skipped_by{uname}
+                                      set(), elem[3], elem[4]]})  # tasl_id: data{text, task}, already_read, taken, skipped_by{uname}
 
 
 read_file('task.csv')
@@ -56,9 +56,11 @@ def page_after_auth():
         cur = to_read[el]
         if not cur[1] and not (uname in cur[3]) and cur[2] is None:  # if text is free yet
             to_read[el][2] = uname
-            return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el, uname=uname)
+            return render_template("index.html", title="testt", text=cur[0][0],
+             task=cur[0][1], n=el, uname=uname, min_l=cur[4], max_l=cur[5])
         elif cur[2] == uname:  # if you reloaded page (state of 'taken' arg is the same)
-            return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el, uname=uname)
+            return render_template("index.html", title="testt", text=cur[0][0],
+             task=cur[0][1], n=el, uname=uname, min_l=cur[4], max_l=cur[5])
 
     fnames = set(os.listdir('csv'))
     for i in fnames - used:
