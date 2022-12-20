@@ -42,13 +42,16 @@ navigator.mediaDevices.getUserMedia({audio: true})
         btnVoice.addEventListener('click', function () {
             setTimeout(() => {
                 // timer.innerHTML = "<h1>0:00</h1>"
-                
 
                 btnPause.classList.toggle("dp-none")
                 if (btnVoice.innerHTML.includes("Запись")) {
                     if (document.querySelector("#text-container").children.length === 2) {
                         document.querySelector("#text-container").appendChild(timer)
                     }
+                    if (!btnSend.classList.contains("dp-none")){
+                        btnSend.classList.add("dp-none")
+                    }
+
                     seconds = 0
                     minutes = 0
 
@@ -58,6 +61,8 @@ navigator.mediaDevices.getUserMedia({audio: true})
                     btnVoice.innerHTML = "<div>Стоп</div>"
                     btnVoice.id = "stop"
                 } else if (btnVoice.innerHTML.includes("Стоп")) {
+                    btnSend.classList.remove("dp-none")
+
                     mediaRecorder.stop();
                     btnVoice.classList.replace("stop", "start")
 

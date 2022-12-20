@@ -123,10 +123,9 @@ audio {
 #button-container {
     margin-top: 30px;
     display: flex;
-    gap: 12px;
+    gap: 118px;
     flex-direction: row;
-    justify-content: space-around;
-    flex-wrap: nowrap;
+    justify-content: center;
 }
 
 #audio-block{
