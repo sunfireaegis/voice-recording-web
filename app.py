@@ -7,8 +7,8 @@ import csv
 import logging
 
 
-if not os.path.exists('log'):
-    os.system('touch log')
+if not os.path.exists('log.txt'):
+    os.system('touch log.txt')
 
 flaskLogger = logging.getLogger('werkzeug')
 flaskLogger.setLevel(logging.CRITICAL) # suppressing some unnecesary logs
@@ -26,19 +26,23 @@ if not os.path.exists('files/'):
 app.config['UPLOAD_FOLDER'] = 'files/'
 
 # folder = "/home/main/projects/voice-recording-web"
-folder = "C:\\Users\\hdhrh\\PycharmProjects\\MMM\\voice-recording-web"
 
 file_list = os.listdir('csv/')
 
 to_read = dict()
 num_list = set()
-with open("csv/task.csv", "r", encoding="utf-8") as task:
-    reader = csv.reader(task, delimiter=',')
-    head = reader.__next__()
-    for i, elem in enumerate(reader):
-        num_list.add(f'{elem[2]}\n')
-        to_read.update({elem[2]: [elem[:2], False, None, set()]})  # tasl_id: data{text, task}, already_read, taken, skipped_by{uname}
+def read_file(name):
+    with open(f"csv/{name}", "r", encoding="utf-8") as task:
+        reader = csv.reader(task, delimiter=',')
+        head = reader.__next__()
+        for i, elem in enumerate(reader):
+            num_list.add(f'{elem[2]}\n')
+            to_read.update({elem[2]: [elem[:2], False, None, set()]})  # tasl_id: data{text, task}, already_read, taken, skipped_by{uname}
+read_file('task.csv')
+used = set()
+used.add('task.csv')
 
+ix = 0
 
 
 @app.route("/index", methods=['POST'])
@@ -48,12 +52,18 @@ def page_after_auth():
         cur = to_read[el]
         if not cur[1] and not (uname in cur[3]) and cur[2] is None: # if text is free yet
             to_read[el][2] = uname
-            return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el)
+            return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el, uname=uname)
         elif cur[2] == uname: # if you reloaded page (state of 'taken' arg is the same)
-            return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el)
+            return render_template("index.html", title="testt", text=cur[0][0], task=cur[0][1], n=el, uname=uname)
+
+    fnames = set(os.listdir('csv'))
+    for i in fnames-used:
+        read_file(i)
+        used.add(i)
+        return redirect(url_for("page_after_auth", uname=uname), code=307)
 
 
-    return render_template('index.html', title='task', text="Заданий больше нет", task=None, n=-1)
+    return render_template('index.html', title='task', text="Заданий больше нет", task=None, n=-1, uname=uname)
 
 
 @app.route("/", methods=["GET"])
@@ -91,12 +101,14 @@ def get_file():
             filename = f'id_{cur_task}_{author}_{datetime.now()}' + '.wav'
 
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            with open('files/written.txt', 'r+') as prefix:
-                prefix.write(f'{cur_task}')
-                print(set([line for line in prefix.readlines()]))
+            # with open('files/written.txt', 'r+') as prefix:
+            #     prefix.write(f'{cur_task}')
+            #     print(set([line for line in prefix.readlines()]))
+            # 
+            to_read.pop(cur_task, None)
 
             logging.info(f'file {filename} is written correctly')
-
+        to_read[cur_task][2] = None
         return redirect(url_for("page_after_auth", uname=author), code=307)
 
 
@@ -126,10 +138,8 @@ def auth():
             app.logger.warning(successful_auth)
         if successful_auth:
             # return redirect(url_for("page_after_auth"), )\
-            response = make_response(redirect(url_for("page_after_auth", uname=login), code=307))
-            response.set_cookie('uname', login)
             logging.info(f'user {login} authorized succesfully')
-            return response
+            return redirect(url_for("page_after_auth", uname=login), code=307)
         logging.error(f'failure authorize {login}: possibly may not exist')
         return render_template("auth.html", error=True)
     return render_template("auth.html")
